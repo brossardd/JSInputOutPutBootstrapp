@@ -16,7 +16,14 @@ function finalParseOperation(parseResult) {
     /**
      * Code Goes Here ▼
      */
+    const horizontal = parseResult.photos.filter(photo => photo.orientation === 'H');
+    const vertical = parseResult.photos.filter(photo => photo.orientation === 'V');
 
+    finalObject.horizontalPhotos = horizontal;
+    finalObject.verticalPhotos = vertical;
+
+
+    console.log(JSON.stringify(finalObject));
     return finalObject;
 }
 module.exports = finalParseOperation;

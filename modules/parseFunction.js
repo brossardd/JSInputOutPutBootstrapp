@@ -27,7 +27,7 @@ function parse(lineCount, line, result){
             tags: tags
         };
         result.photos.push(photo);
-        console.log(JSON.stringify(photo));
+        //console.log(JSON.stringify(photo));
         
     }
 }
