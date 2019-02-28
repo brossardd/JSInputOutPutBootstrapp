@@ -20,7 +20,7 @@ function convert(outputObject){
     const { slides } = outputObject;
     instructions.push(slides.length);
     console.log(outputObject);
-    slides.photos.forEach(slide => {
+    slides.forEach(slide => {
         instructions.push(slide.photos.map(photos => photos.id).join(' '));
     });
 

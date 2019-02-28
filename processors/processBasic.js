@@ -15,9 +15,22 @@ const _ = require('lodash'),
  */
 function processInput(inputObject){
     const outputObject = {};
+    const {horizontalPhotos, verticalPhotos} = inputObject;
 
     outputObject.slides = [];
 
+    outputObject.slides = outputObject.slides.concat(horizontalPhotos.map(photo => createSlide([photo])));
+
+    for (let i = 0; i++; i < verticalPhotos.length) {
+        if (!!verticalPhotos[i+1]) {
+            outputObject.slides = outputObject.slides.concat(createSlide([verticalPhotos[i], verticalPhotos[i+1]]));
+        } else {
+            outputObject.slides = outputObject.slides.concat(createSlide([verticalPhotos[i]]));
+        }
+        i++;
+    }
+
+    console.log(outputObject);
 
     return {
         score: computeScore(inputObject, outputObject),
