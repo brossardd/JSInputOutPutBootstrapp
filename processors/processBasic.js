@@ -34,7 +34,7 @@ function processInput(inputObject){
     let { slides } = outputObject;
     const scoreBefore = internalComputeScore(slides);
     const maxCount = slides.length * 4 < 1000 ? 1000 : slides.length * 4;
-    slides = slides.sort((s1, s2) => s1.tags[0] > s2.tags[0]);
+    slides = slides.sort(sortSlides);
 
     while (count < maxCount) {
         const index1 = Math.floor(Math.random()*slides.length);
@@ -123,10 +123,22 @@ function diffTags(base, minus) {
 
 
 function createSlide(photos) {
+    const photosSort = new Set(photos.map(p => p.tags).join(",").split(","));
     return {
-        tags : new Set(photos.map(p => releaseEvents.tags).join()).sort((t1, t2) => t1 > t2),
+        tags : Array.from(photosSort),
         photos
     };
+}
+
+function sortSlides(slide1, slide2) {
+    // .sort((t1, t2) => t1
+    const setAll = new Set(slide1.tags.concat(slide2.tags));
+    const diff = (slide1.tags.length + slide2.tags.length) - setAll.size;
+    if (diff === 0) {
+        return 1000;
+    } else {
+        return 100 / diff;
+    }
 }
 
 module.exports = processInput;
