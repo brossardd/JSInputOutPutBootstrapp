@@ -17,6 +17,18 @@ function parse(lineCount, line, result){
      */
 
     if (lineCount === 0){
+        result.photosCount = +line;
+        result.photos = [];
+    } else {
+        const [orientation, M, ...tags] = line.split(' ');
+        const photo = {
+            orientation: orientation,
+            M: +M,
+            tags: tags
+        };
+        result.photos.push(photo);
+        console.log(JSON.stringify(photo));
+        
     }
 }
 
