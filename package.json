@@ -4,7 +4,6 @@
   "description": "bootstrapproject",
   "main": "main.js",
   "scripts": {
-    "postinstall": "nvm use",
     "start": "node main.js -f",
     "all": "node main.js -d",
     "multi": "node --experimental-worker main.js -f",
@@ -28,6 +27,7 @@
   "dependencies": {
     "commander": "^2.19.0",
     "lodash": "^4.17.11",
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "rxjs": "^6.4.0"
   }
 }
