@@ -17,6 +17,7 @@ function convert(outputObject){
     /**
      * Code Goes Here ▼
      */
+    const { slides } = outputObject;
     instructions.push(slides.length);
     slides.array.forEach(slide => {
         instructions.push(slide.photos.map(photos => photos.id).join(' '));
