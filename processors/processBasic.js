@@ -33,7 +33,10 @@ function processInput(inputObject){
     let count = 0;
     let { slides } = outputObject;
     const scoreBefore = internalComputeScore(slides);
-    while (count < slides.length * 2) {
+
+    slides = slides.sort((s1, s2) => s1.tags[0] > s2.tags[0]);
+
+    while (count < slides.length * 4) {
         const index1 = Math.floor(Math.random()*slides.length);
         const index2 = Math.floor(Math.random()*slides.length);
         if (index1 !== index2) {
@@ -121,6 +124,7 @@ function diffTags(base, minus) {
 
 function createSlide(photos) {
     return {
+        tags : new Set(photos.map(p => releaseEvents.tags).join()).sort((t1, t2) => t1 > t2),
         photos
     };
 }
