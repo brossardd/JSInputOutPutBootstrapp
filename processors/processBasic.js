@@ -44,4 +44,10 @@ function createSlide(photos) {
     };
 }
 
+function permute(slides, index1, index2){
+    const temp = slides[index1];
+    slides[index1] = slides[index2];
+    slides[index2] = temp;
+}
+
 module.exports = processInput;
