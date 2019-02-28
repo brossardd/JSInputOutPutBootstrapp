@@ -30,7 +30,24 @@ function processInput(inputObject){
         }
     }
 
-    console.log(tag, outputObject);
+    let count = 0;
+    let { slides } = outputObject;
+    while (count < slides.length * 3) {
+        console.log(`${count}/${slides.length * 3}`);
+        const index1 = Math.floor(Math.random()*slides.length);
+        const index2 = Math.floor(Math.random()*slides.length);
+        if (index1 !== index2) {
+            const currentScore = internalComputeScore(getPartialSlideShow(slides, index1, index2));
+            const permutedSlides = permute(slides, index1, index2);
+            const currentScoreAfterPermut = internalComputeScore(getPartialSlideShow(permutedSlides, index1, index2));
+            if (currentScoreAfterPermut > currentScore) {
+                slides = permutedSlides;
+            }
+            count++;
+        }
+    }
+
+    outputObject.slides = slides;
 
     return {
         score: computeScore(inputObject, outputObject),
@@ -38,16 +55,73 @@ function processInput(inputObject){
     };
 }
 
+function getPartialSlideShow(slides, index1, index2) {
+    const partialSlidesArray = [];
+    const indexArray = [index1 - 1, index1, index1 + 1, index2 - 1, index2, index2 + 1].filter(idx => {
+        return idx > 0 && idx < slides.length - 1;
+    });
+
+    new Set(indexArray).forEach(idx => {
+        partialSlidesArray.push(slides[idx]);
+    });
+
+    return partialSlidesArray;
+}
+
+function permute(slides, index1, index2){
+    const newSlides = Object.assign(slides);
+    const temp = newSlides[index1];
+    newSlides[index1] = newSlides[index2];
+    newSlides[index2] = temp;
+    return newSlides;
+}
+
+function internalComputeScore(slides) {
+    let score = 0;
+    const nbIntersec = slides.length - 1;
+  
+    for (let i = 0; i < nbIntersec; i++) {
+      const prevSlideTags = extractTags(slides[i]);
+      const nextSlideTags = extractTags(slides[i+1]);
+      const commonTags = intersecTags(prevSlideTags, nextSlideTags);
+      const uniqTagsPrevSlide = diffTags(prevSlideTags, commonTags);
+      const uniqTagsNextSlide = diffTags(nextSlideTags, commonTags);
+      const minTagsNb = Math.min(commonTags.length, uniqTagsPrevSlide.length, uniqTagsNextSlide.length);
+      score += minTagsNb;
+    }
+  
+    return score;
+}
+
+function extractTags({photos}) {
+    let tags = {};
+    for(const p of photos) {
+      for(const t of p.tags) {
+        tags[t] = t;
+      }
+    }
+    return Object.keys(tags);
+  }
+  
+function intersecTags(tags1, tags2) {
+    const inter = [];
+    for(const t of tags1) {
+      if(tags2.indexOf(t) !== -1) {
+        inter.push(t);
+      }
+    }
+    return inter;
+}
+  
+function diffTags(base, minus) {
+    return base.filter(t => minus.indexOf(t) === -1);
+}
+
+
 function createSlide(photos) {
     return {
         photos
     };
-}
-
-function permute(slides, index1, index2){
-    const temp = slides[index1];
-    slides[index1] = slides[index2];
-    slides[index2] = temp;
 }
 
 module.exports = processInput;

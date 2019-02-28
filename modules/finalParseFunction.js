@@ -22,8 +22,6 @@ function finalParseOperation(parseResult) {
     finalObject.horizontalPhotos = horizontal;
     finalObject.verticalPhotos = vertical;
 
-
-    console.log(JSON.stringify(finalObject));
     return finalObject;
 }
 module.exports = finalParseOperation;
