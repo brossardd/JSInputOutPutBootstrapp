@@ -29,7 +29,7 @@ function diffTags(base, minus) {
 }
 
 function uniqTags(tags1, tags2) {
-  return [...tags1, diffTags(tags2, ...intersecTags(tags1, tags2))];
+  return [...tags1, diffTags(tags2, intersecTags(tags1, tags2))];
 }
 
 function getRandomInt(max) {
