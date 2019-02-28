@@ -33,10 +33,10 @@ function processInput(inputObject){
     let count = 0;
     let { slides } = outputObject;
     const scoreBefore = internalComputeScore(slides);
-
+    const maxCount = slides.length * 4 < 1000 ? 1000 : slides.length * 4;
     slides = slides.sort((s1, s2) => s1.tags[0] > s2.tags[0]);
 
-    while (count < slides.length * 4) {
+    while (count < maxCount) {
         const index1 = Math.floor(Math.random()*slides.length);
         const index2 = Math.floor(Math.random()*slides.length);
         if (index1 !== index2) {
