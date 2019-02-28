@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node main.js -l -f",
     "all": "node main.js -d",
-    "multi": "node --experimental-worker -l main.js -f",
-    "multi-all": "node --experimental-worker -l main.js -d",
+    "multi": "node --experimental-worker main.js -l -f",
+    "multi-all": "node --experimental-worker main.js -l -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

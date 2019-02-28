@@ -32,8 +32,8 @@ function processInput(inputObject){
 
     let count = 0;
     let { slides } = outputObject;
-    while (count < slides.length * 3) {
-        console.log(`${count}/${slides.length * 3}`);
+    const scoreBefore = internalComputeScore(slides);
+    while (count < slides.length * 2) {
         const index1 = Math.floor(Math.random()*slides.length);
         const index2 = Math.floor(Math.random()*slides.length);
         if (index1 !== index2) {
@@ -47,6 +47,7 @@ function processInput(inputObject){
         }
     }
 
+    console.log(`Score before = ${scoreBefore}`);
     outputObject.slides = slides;
 
     return {
@@ -58,7 +59,7 @@ function processInput(inputObject){
 function getPartialSlideShow(slides, index1, index2) {
     const partialSlidesArray = [];
     const indexArray = [index1 - 1, index1, index1 + 1, index2 - 1, index2, index2 + 1].filter(idx => {
-        return idx > 0 && idx < slides.length - 1;
+        return idx >= 0 && idx <= slides.length - 1;
     });
 
     new Set(indexArray).forEach(idx => {
@@ -69,7 +70,7 @@ function getPartialSlideShow(slides, index1, index2) {
 }
 
 function permute(slides, index1, index2){
-    const newSlides = Object.assign(slides);
+    const newSlides = slides.concat([]);
     const temp = newSlides[index1];
     newSlides[index1] = newSlides[index2];
     newSlides[index2] = temp;
