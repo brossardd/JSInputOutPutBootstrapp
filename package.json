@@ -4,10 +4,10 @@
   "description": "bootstrapproject",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js -f",
+    "start": "node main.js -l -f",
     "all": "node main.js -d",
-    "multi": "node --experimental-worker main.js -f",
-    "multi-all": "node --experimental-worker main.js -d",
+    "multi": "node --experimental-worker -l main.js -f",
+    "multi-all": "node --experimental-worker -l main.js -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -44,7 +44,7 @@ function computeScore(input, output) {
     const commonTags = intersecTags(prevSlideTags, nextSlideTags);
     const uniqTagsPrevSlide = diffTags(prevSlideTags, commonTags);
     const uniqTagsNextSlide = diffTags(nextSlideTags, commonTags);
-    const minTagNb = Math.min(commonTags.length, uniqTagsPrevSlide.length, uniqTagsNextSlide.length);
+    const minTagsNb = Math.min(commonTags.length, uniqTagsPrevSlide.length, uniqTagsNextSlide.length);
     score += minTagsNb;
   }
 
