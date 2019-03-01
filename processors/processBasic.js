@@ -21,20 +21,21 @@ function processInput(inputObject){
     outputObject.slides = [];
 
     outputObject.slides = outputObject.slides.concat(horizontalPhotos.map(photo => createSlide([photo])));
+    outputObject.slides = outputObject.slides.concat(computeVerticales(verticalPhotos));
 
-    for (let i = 0; i < verticalPhotos.length; i+=2) {
+    /*for (let i = 0; i < verticalPhotos.length; i+=2) {
         if (!!verticalPhotos[i+1]) {
             outputObject.slides = outputObject.slides.concat(createSlide([verticalPhotos[i], verticalPhotos[i+1]]));
         } else {
             outputObject.slides = outputObject.slides.concat(createSlide([verticalPhotos[i]]));
         }
-    }
+    }*/
 
     let count = 0;
     let { slides } = outputObject;
     const scoreBefore = internalComputeScore(slides);
-    const maxCount = slides.length * 4 < 1000 ? 1000 : slides.length * 4;
-    slides = slides.sort(sortSlides);
+    const maxCount = slides.length < 200000 ? 200000 : slides.length;
+    // slides = slides.sort(sortSlides);
 
     while (count < maxCount) {
         const index1 = Math.floor(Math.random()*slides.length);
@@ -58,6 +59,71 @@ function processInput(inputObject){
         outputObject
     };
 }
+
+function computeVerticales(photos) {
+    const slides = [];
+  
+    while (photos.length > 0) {
+      const cur = photos.shift();
+      const extracted = extractSome(photos, 5);
+      if (extracted.length === 0) {
+        slides.push(createSlide([cur]));
+      } else {
+        const best = extracted[0];
+        const bestTags = uniqTags(cur.tags, best.tags);
+        for (let i = 0; i < extracted.length; i++) {
+          const tags = uniqTags(cur.tags, extracted[i].tags);
+          if (tags.length > bestTags.length) {
+            best = extracted[i];
+            bestTags = tags;
+          }
+        }
+        const bestIndex = extracted.indexOf(best);
+        extracted.splice(bestIndex, 1);
+        extracted.forEach(p => photos.push(p));
+        const slide = createSlide([cur, best]);
+        slide.tags = bestTags;
+        slides.push(slide);
+      }
+    }
+  
+    return slides;
+}
+
+function intersecTags(tags1, tags2) {
+    const inter = [];
+    for (const t of tags1) {
+      if (tags2.indexOf(t) !== -1) {
+        inter.push(t);
+      }
+    }
+    return inter;
+  }
+  
+  function diffTags(base, minus) {
+    return base.filter(t => minus.indexOf(t) === -1);
+  }
+  
+  function uniqTags(tags1, tags2) {
+    return [...tags1, diffTags(tags2, intersecTags(tags1, tags2))];
+  }
+  
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+  
+  function extractSome(list, max) {
+    const extracted = [];
+    while (list.length > 0 && extracted.length < max) {
+      const index = getRandomInt(list.length);
+      const slice = list.splice(index, 1);
+      if (typeof slice !== "undefined" && slice.length > 0) {
+        extracted.push(slice[0]);
+      }
+    }
+    return extracted;
+  }
+
 
 function getPartialSlideShow(slides, index1, index2) {
     const partialSlidesArray = [];
